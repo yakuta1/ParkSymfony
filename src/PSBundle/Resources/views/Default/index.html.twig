@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/jpages.css') }}">
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/jquery-min.js') }}"></script>
+        <script src="{{ asset('js/jpages.js') }}"></script>
+        <script src="{{ asset('js/tabifier.js') }}"></script>
+        <script src="{{ asset('js/ajax.js') }}"></script>
+    {% endblock %}
+
+
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <div class="row col-lg-9 centered">
+
+        <div class="col-lg-6 .col-xs-1 hidden-xs hidden-md hidden-sm">
+            <img class="psilogo wow fadeInLeftBig" src="{{ asset('img/psilogo.png') }}" alt="logo" />
+
+        </div>	<!-- End of Col Div-->
+
+
+        <div class="col-lg-6 .col-xs-1">
+            <div class="page-header">
+                <h1 class="wow fadeInRightBig"><span data-wow-delay="2s" class="wow flash">Invoice History</span></h1>
+            </div>
+        </div>	<!-- End of Col Div-->
+
+    </div>	<!-- End of Row Div-->
+
+    <div class="row col-lg-9 centered " data-wow-delay="1s">
+
+        <div class="col-lg-3 wow fadeInUpBig">
+
+            {# app/Resources/views/Default/new.html.twig #}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+
+
+        </div>	<!-- End of Col Div-->
+        <table class='maintable table table-bordered'>
+            <thead>
+            <th>#</th>
+            <th>Invoice Number</th>
+            <th>Invoice Date</th>
+
+
+            </thead>
+
+        {% for entity in invoices %}
+            <tr class="table_row">
+                <td>{{ entity.id }}</td>
+                 <td>{{ entity.invoiceNum }}</td>
+                <td>{{ entity.invoiceDate|date('Y-m-d') }}</td>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>	<!-- End of Row Div-->
+
+
+    <div class="row">
+
+        <div class="col-sm-9 centered">
+
+            <div id="mainContent">
+
+            </div> <!-- End of Main Content -->
+
+
+        </div>	<!-- End of Col Div-->
+
+    </div>	<!-- End of Row Div-->
+</div> <!-- End of Container Div-->
+
+{% block javascriptsfooter %}
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/wow.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+{% endblock %}
+
+
+</body>
+</html>
+

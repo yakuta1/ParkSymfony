@@ -47,22 +47,29 @@
 
     </div>	<!-- End of Row Div-->
 
-    <div class="row col-lg-9 centered " data-wow-delay="1s">
+    <div class="row col-lg-9 wow fadeInUpBig centered " data-wow-delay="1s">
 
-        <div class="col-lg-3 wow fadeInUpBig">
+
 
             {# app/Resources/views/Default/new.html.twig #}
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
+            {{ form_start(form, {'attr': {'id': 'forma'}}) }}
+            {{ form_widget(form, {'attr': {'class': 'row'}}) }}
             {{ form_end(form) }}
 
 
-        </div>	<!-- End of Col Div-->
-        <table class='maintable table table-bordered'>
+     </div>	<!-- End of Col Div-->
+
+    <div class="col-lg-9 centered">
+    <table class='maintable table table-bordered'>
             <thead>
             <th>#</th>
             <th>Invoice Number</th>
             <th>Invoice Date</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+
 
 
             </thead>
@@ -70,10 +77,14 @@
         {% for entity in invoices %}
             <tr class="table_row">
                 <td>{{ entity.id }}</td>
-                 <td>{{ entity.invoiceNum }}</td>
-                <td>{{ entity.invoiceDate|date('Y-m-d') }}</td>
+                 <td>{{ entity.invoice_num }}</td>
+                <td>{{ entity.invoice_date|date('Y-m-d') }}</td>
+                <td>{{ entity.product_description }}</td>
+                <td>{{ entity.qty|number_format(2, '.', ',') }}</td>
+                <td>{{ entity.price|number_format(2, '.', ',') }}</td>
+                <td>{{ (entity.qty*entity.price)|number_format(2, '.', ',') }}</td>
 
-                </td>
+
             </tr>
         {% endfor %}
         </table>

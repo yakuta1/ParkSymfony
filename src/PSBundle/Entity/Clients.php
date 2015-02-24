@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Clients
  *
- * @ORM\Table()
+ * @ORM\Table(name= "Clients")
  * @ORM\Entity(repositoryClass="PSBundle\Entity\ClientsRepository")
  */
 class Clients
@@ -22,13 +22,6 @@ class Clients
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="client_id", type="string", length=100)
-     *
-     */
-
 
     /**
      * @var string
@@ -38,6 +31,20 @@ class Clients
 
     private $clientelle;
 
+    public function __construct()
+    {
+        $this->clientelle = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getClientName();
+    }
+
+    /**
+     * @var string
+     * @ORM\Column(name="client_id", type="string", length=100)
+     */
 
     private $clientId;
 
@@ -48,6 +55,13 @@ class Clients
      *
      */
     private $clientName;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
 
 
     /**

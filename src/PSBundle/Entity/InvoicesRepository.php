@@ -12,4 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class InvoicesRepository extends EntityRepository
 {
+
+    public function selectAll(){
+
+        $stmt = $this->getDoctrine()->getManager()
+            -> getConnection()
+            -> prepare('
+                SELECT
+                *
+                FROM
+                invoices
+                INNER JOIN
+                InvoiceLineItems
+                ON
+                Invoices.invoice_num=InvoiceLineItems.invoice_num
+                INNER JOIN
+                Products
+                ON
+                InvoiceLineItems.product_id=products.product_id
+                ');
+        //$stmt = bindValue('',$);
+        $stmt->execute();
+        return $stmt->fetchAll();
+
+    }
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Invoices
  *
- * @ORM\Table()
+ * @ORM\Table(name ="Invoices")
  * @ORM\Entity(repositoryClass="PSBundle\Entity\InvoicesRepository")
  */
 class Invoices
@@ -29,9 +29,9 @@ class Invoices
     private $invoiceDate;
 
     /**
-
+     * @var string
      * @ORM\ManyToOne(targetEntity="Clients", inversedBy="clientelle")
-     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="client_id_test", referencedColumnName="id")
      */
     private $clientId;
 
@@ -42,6 +42,8 @@ class Invoices
      * @ORM\Column(name="invoice_num", type="string", length=100)
      */
     private $invoiceNum;
+
+
 
 
     /**
@@ -76,13 +78,6 @@ class Invoices
     {
         return $this->invoiceDate;
     }
-
-    /**
-     * Set clientId
-     *
-     * @param string $clientId
-     * @return Invoices
-     */
 
     /**
      * Set invoiceNum

@@ -13,10 +13,10 @@ use Doctrine\ORM\EntityRepository;
 class InvoicesRepository extends EntityRepository
 {
 
-    public function selectAll(){
+    public function test(){
 
-        $stmt = $this->getDoctrine()->getManager()
-            -> getConnection()
+        $stmt = $this->getEntityManager()
+            ->getConnection()
             -> prepare('
                 SELECT
                 *
@@ -33,7 +33,8 @@ class InvoicesRepository extends EntityRepository
                 ');
         //$stmt = bindValue('',$);
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $invoices = $stmt->fetchAll();
+
 
     }
 }

@@ -1,49 +1,44 @@
+function postForm( $form, callback ){
+
+    /*
+     * Get all form values
+     */
+    var values = {};
+    $.each( $form.serializeArray(), function(i, field) {
+        values[field.name] = field.value;
+    });
+
+    /*
+     * Throw the form values to the server!
+     */
+    $.ajax({
+        type        : $form.attr( 'method' ),
+        url         : $form.attr( 'action' ),
+        data        : values,
+        success     : function(data) {
+            callback( data );
+        }
+    });
+
+}
+
+
 $(document).ready(function() {
-		
-			// process the form
-			$('#filterForm').submit(function(event) {
 
-				// get the form data
-				var formData = {
-					'yearfilter'              : $('#yearfilter').val(),
-					'client'             : $('#client').val(),
-					'product'    : $('#product').val()
-				};
+    var forms = [
+        '[ name="{{ form.vars.full_name }}"]'
+    ];
 
-				// process the form
-				$.ajax({
-					type        : 'POST', 
-					url         : 'mainScript.php', 
-					data        : formData, 
-					dataType    : 'html',
-					success  	: function(html){
-													$('#mainContent').empty();
-													$('#loader').show().delay(600).hide();
-													$('#mainContent').append(html);
-												}
-							   
-				})
-					
-					.done(function(data) {
+    $( forms.join(',') ).submit( function( e ){
+        e.preventDefault();
 
-						
-						console.log(data); 
+        postForm( $(this), function( response ){
+        });
 
-					if ( ! data.success) {
-					
-							   
-				} else {
+        return false;
+    });
 
-					// ALL GOOD!
-					$('#mainContent').append('<div class="alert alert-success">' + data.message + '</div>');
 
-						}
-					});
-
-				// stop the form from submitting the normal way and refreshing the page
-				event.preventDefault();
-			});
-			return false;
-		});
+});
 
 		

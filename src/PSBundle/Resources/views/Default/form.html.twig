@@ -1,0 +1,13 @@
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-min.js') }}"></script>
+    <script src="{{ asset('js/ajax.js') }}"></script>
+{% endblock %}
+
+<form method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+</form>
+
+{{ date }}
+{{ client.clientName }}
+{{ product.productDescription }}

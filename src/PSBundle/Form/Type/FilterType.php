@@ -23,7 +23,7 @@ class FilterType extends AbstractType
                 'placeholder' => 'Choose Your Date',
                 'label'  => 'Filter By Date',
                 'empty_data'  => null,
-                'attr' => array('class' => 'col-lg-3 form-control form-group')
+                'attr' => array('class' => 'col-lg-3 form-control form-group noprint')
             ))
             ->add('Clients', 'entity', array(
                 'class' => 'PSBundle:Clients',
@@ -31,7 +31,7 @@ class FilterType extends AbstractType
                 'required'    => false,
                 'label'  => 'Filter By Client',
                 'property' => 'clientName',
-                'attr' => array('class' => 'col-lg-3 form-control form-group')
+                'attr' => array('class' => 'col-lg-3 form-control form-group noprint')
             ))
             ->add('Products', 'entity', array(
                 'class' => 'PSBundle:Products',
@@ -39,12 +39,12 @@ class FilterType extends AbstractType
                 'required'    => false,
                 'label'  => 'Filter By Product',
                 'property' => 'productDescription',
-                'attr' => array('class' => 'col-lg-3 form-control form-group')
+                'attr' => array('class' => 'col-lg-3 form-control form-group noprint')
             ))
             ->add('save', 'submit', array('label' => 'Submit',
-                'attr' => array('class' => 'btn btn-danger space')))
+                'attr' => array('class' => 'btn btn-danger space noprint')))
             ->add('reset', 'reset', array('label' => 'Reset',
-                'attr' => array('class' => 'btn btn-success')))
+                'attr' => array('class' => 'btn btn-success noprint')))
             ->getForm();
 
     }

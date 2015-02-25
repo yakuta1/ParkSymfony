@@ -13,27 +13,308 @@ use Doctrine\ORM\EntityRepository;
 class InvoicesRepository extends EntityRepository
 {
 
-    public function test(){
+    public function test($date, $client, $product){
 
-        $stmt = $this->getEntityManager()
-            ->getConnection()
-            -> prepare('
-                SELECT
-                *
-                FROM
-                invoices
-                INNER JOIN
-                InvoiceLineItems
-                ON
-                Invoices.invoice_num=InvoiceLineItems.invoice_num
-                INNER JOIN
-                Products
-                ON
-                InvoiceLineItems.product_id=products.product_id
-                ');
-        //$stmt = bindValue('',$);
-        $stmt->execute();
-        return $invoices = $stmt->fetchAll();
+        $date = $date;
+        $client = $client;
+        $product = $product;
+
+        if ($client !==NULL AND $product !==NULL AND $date ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE products.product_id = :product AND clients.client_id = :client"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($client !==NULL AND $date ==NULL AND $product ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE clients.client_id = :client"
+            );
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '2' AND $product ==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(MONTH(invoices.invoice_date) = MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			OR
+			(MONTH(invoices.invoice_date) = MONTH(NOW())AND YEAR(invoices.invoice_date) = YEAR(NOW()))"
+            );
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '2' AND $product !==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			((MONTH(invoices.invoice_date) = MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			OR
+			(MONTH(invoices.invoice_date) = MONTH(NOW())AND YEAR(invoices.invoice_date) = YEAR(NOW())))
+			AND
+			products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '2' AND $product ==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			((MONTH(invoices.invoice_date) = MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			OR
+			(MONTH(invoices.invoice_date) = MONTH(NOW())AND YEAR(invoices.invoice_date) = YEAR(NOW())))
+			AND
+			clients.client_id = :client"
+            );
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '2' AND $product !==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			((MONTH(invoices.invoice_date) = MONTH(DATE_ADD(NOW(), INTERVAL -1 MONTH)) AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			OR
+			(MONTH(invoices.invoice_date) = MONTH(NOW())AND YEAR(invoices.invoice_date) = YEAR(NOW())))
+			AND
+			clients.client_id = :client
+			AND
+			products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif  ($date == '3' AND $product ==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE MONTH(invoices.invoice_date) = MONTH(NOW()) AND YEAR(invoices.invoice_date) = YEAR(NOW())"
+            );
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '3' AND $product !==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(MONTH(invoices.invoice_date) = MONTH(NOW())
+			AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '3' AND $product ==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(MONTH(invoices.invoice_date) = MONTH(NOW())
+			AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			clients.client_id = :client"
+            );
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '3' AND $product !==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(MONTH(invoices.invoice_date) = MONTH(NOW())
+			AND YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			clients.client_id = :client
+			AND
+			products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '4' AND $product ==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE YEAR(invoices.invoice_date) = YEAR(NOW())"
+            );
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '4' AND $product !==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '4' AND $product ==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			clients.client_id = :client"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '4' AND $product !==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE YEAR(invoices.invoice_date) = YEAR(NOW())
+			AND
+			clients.client_id = :client
+			AND
+			products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '5' AND $product ==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			YEAR(invoices.invoice_date) = YEAR(DATE_ADD(NOW(), INTERVAL -1 YEAR))
+			OR YEAR(invoices.invoice_date) = YEAR(NOW())
+			");
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '5' AND $product !==NULL AND $client ==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(YEAR(invoices.invoice_date) = YEAR(DATE_ADD(NOW(), INTERVAL -1 YEAR))
+			OR
+			YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			products.product_id = :product
+			" );
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '5' AND $product ==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(YEAR(invoices.invoice_date) = YEAR(DATE_ADD(NOW(), INTERVAL -1 YEAR))
+			OR YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			clients.client_id = :client
+			" );
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();}
+        elseif ($date == '5' AND $product !==NULL AND $client !==NULL){
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE
+			(YEAR(invoices.invoice_date) = YEAR(DATE_ADD(NOW(), INTERVAL -1 YEAR))
+			OR YEAR(invoices.invoice_date) = YEAR(NOW()))
+			AND
+			clients.client_id = :client
+			AND
+			products.product_id = :product
+			" );
+            $stmt -> bindValue('product',$product);
+            $stmt -> bindValue('client',$client);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();
+        }
+        else{
+            $stmt = $this->getEntityManager()->getConnection()->prepare("
+			SELECT *
+			FROM invoices
+			INNER JOIN invoicelineitems ON invoices.invoice_num = invoicelineitems.invoice_num
+			INNER JOIN products ON invoicelineitems.product_id = products.product_id
+			INNER JOIN clients ON products.client_id = clients.client_id
+			WHERE products.product_id = :product"
+            );
+            $stmt -> bindValue('product',$product);
+            $stmt->execute();
+            return $invoices = $stmt->fetchAll();
+        }
+
+
+
 
 
     }

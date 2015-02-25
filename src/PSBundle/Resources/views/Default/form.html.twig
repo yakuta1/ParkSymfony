@@ -1,13 +1,9 @@
-{% block javascripts %}
-    <script src="{{ asset('js/jquery-min.js') }}"></script>
-    <script src="{{ asset('js/ajax.js') }}"></script>
-{% endblock %}
+<div class="row col-lg-9 centered " >
 
-<form method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+    {{ form_start(form, {'attr': {'id': 'forma'}}) }}
+    {{ form_widget(form, {'attr': {'class': 'row'}}) }}
+    {{ form_end(form) }}
 
-</form>
+</div>	<!-- End of Col Div-->
 
-{{ date }}
-{{ client.clientName }}
-{{ product.productDescription }}
+

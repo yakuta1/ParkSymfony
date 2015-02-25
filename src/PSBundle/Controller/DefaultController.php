@@ -16,52 +16,6 @@ use Doctrine\ORM\EntityManager;
 
 class DefaultController extends Controller
 {
-    public function testAction()
-    {
-     $em1 = $this->getDoctrine()->getManager();
-     $invoices = $em1->getRepository('PSBundle:Invoices'); /** @var $invoices PSBundle\Entity\Invoices */
-
-       /** $stmt = $this->getDoctrine()->getManager()
-            -> getConnection()
-            -> prepare('
-                SELECT
-                *
-                FROM
-                invoices
-                INNER JOIN
-                InvoiceLineItems
-                ON
-                Invoices.invoice_num=InvoiceLineItems.invoice_num
-                INNER JOIN
-                Products
-                ON
-                InvoiceLineItems.product_id=products.product_id
-                ');
-        //$stmt = bindValue('',$);
-        $stmt->execute();
-        $invoices =  $stmt->fetchAll();
-        */
-
-       //  exit(\Doctrine\Common\Util\Debug::dump($result));
-
-        //$form = $this->createForm(new FilterType());
-
-        //$form->handleRequest($request);
-
-       // if ($form->isValid()) {
-
-            //$dateVar = $form->get('Date')->getData();
-           // $clientVar = $form->get('Clients')->getData()->getClientId();
-            //$productVar = $form->get('Products')->getData()->getProductId();
-
-       // }
-
-
-       /** return $this->render('PSBundle:Default:index.html.twig', array(
-            'invoices' => $invoices,
-            'form' => $form->createView()
-        ));  */
-    }
 
     public function indexAction(Request $request){
 
@@ -70,27 +24,25 @@ class DefaultController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
 
-            $dateVar = $form->get('Date')->getData();
-            $clientVar = $form->get('Clients')->getData();
 
-            //$clientVar = $clientVar['clientName'];
+            $date = $form->get('Date')->getData();
+            $client = $form->get('Clients')->getData()->getClientId();
+            $product = $form->get('Products')->getData()->getProductId();
 
-            $productVar = $form->get('Products')->getData();
+            $em1 = $this->getDoctrine()->getManager();
+            $invoices = $em1->getRepository('PSBundle:Invoices')->test($date,$client,$product); /** @var $invoices PSBundle\Entity\Invoices */
 
-            var_dump($dateVar);
-            var_dump($clientVar);
-            var_dump($productVar);
+            //exit(\Doctrine\Common\Util\Debug::dump($invoices));
+
+            return $this->render('PSBundle:Default:index.html.twig', array(
+                'form' => $form->createView(),
+                'invoices'=> $invoices
+            ));
 
         }
 
-
         return $this->render('PSBundle:Default:form.html.twig', array(
-            'form' => $form->createView(),
-            'date' => $dateVar,
-            'client' => $clientVar,
-            'product' => $productVar
-
-
+            'form' => $form->createView()
         ));
 
     }

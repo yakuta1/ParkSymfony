@@ -1,0 +1,40 @@
+{% block table %}
+<div class="col-lg-12 centered">
+    <table class='maintable table table-bordered'>
+        <thead>
+        <th>#</th>
+        <th>Invoice Number</th>
+        <th>Invoice Date</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Details</th>
+        </thead>
+
+        {% for entity in invoices %}
+            <tr class="table_row">
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.invoice_num }}</td>
+                <td>{{ entity.invoice_date|date('Y-m-d') }}</td>
+                <td>{{ entity.product_description }}</td>
+                <td>{{ entity.qty|number_format(2, '.', ',') }}</td>
+                <td>{{ entity.price|number_format(2, '.', ',') }}</td>
+                <td>{{ (entity.qty*entity.price)|number_format(2, '.', ',') }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary noprint"
+                            data-toggle="modal" data-target="#myModal"
+                            data-num="{{ entity.invoice_num }}"
+                            data-date="{{ entity.invoice_date|date('Y-m-d') }}"
+                            data-description="{{ entity.product_description }}"
+                            data-qty="{{ entity.qty|number_format(2, '.', ',') }}"
+                            data-price="{{ entity.price|number_format(2, '.', ',') }}"
+                            data-total="{{ (entity.qty*entity.price)|number_format(2, '.', ',') }}"
+                            >Details</button>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</div>	<!-- End of Row Div-->
+    {% endblock %}
